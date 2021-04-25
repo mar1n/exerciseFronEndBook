@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Minimal JS Front-End App Example</title>
+    <script src="src/c/initialize.js"></script>
+    <script src="src/m/Book.js"></script>
+  </head>
+  <body>
+    <h1>Public Library</h1>
+    <h2>An Example of a Minimal JavaScript Front-End App</h2>
+    <p>This app supports the following operations:</p>
+    <menu>
+     <li><a href="retrieveAndListAllBooks.html">
+          List all books</a></li>
+     <li><a href="createBook.html">Add a new book</a></li>
+     <li><a href="updateBook.html">Update a book</a></li>
+     <li><a href="deleteBook.html">Delete a book</a></li>
+     <li><button type="button" onclick="Book.clearData()">
+       Clear database
+     </button></li>
+     <li><button type="button" onclick="Book.createTestData()">
+       Create test data
+     </button></li>
+    </menu>
+  </body>
+</html>
