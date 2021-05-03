@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <title>IndexedDB Tutorial</title>
+</head>
+<body>
+    <form id="addnew">
+        <div>
+            <!-- Used for updates -->
+            <input type="hidden" name="key" id="key" value="">
+            <label for="task">What do you need to do? (required)</label>
+            <input type="text" name="task" id="task" value="" required>
+        </div>
+    
+        <div class="txtright">
+            <input type="checkbox" name="status" id="status"><label for="status">Completed?</label>
+        </div>
+    
+        <div>
+            <label for="start">Start date:</label>
+            <input type="date" id="start" name="start" value="">
+        </div>
+    
+        <div>
+            <label for="due">Due date:</label>
+            <input type="date" id="due" name="due" value="">
+        </div>
+    
+        <div>
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority">
+                <option value="0">None</option>
+                <option value="1">1 - High</option>
+                <option value="2">2</option>
+                <option value="3">3 - Medium</option>
+                <option value="4">4</option>
+                <option value="5">5 - Low</option>
+            </select>
+        </div>
+    
+        <div>
+            <label for="tasknotes">Task notes</label>
+            <textarea id="tasknotes" name="tasknotes" cols="30" rows="3"></textarea>
+            <button type="submit" id="submit">Save entry</button>
+            <button type="button" id="delete" class="hidden" >Delete entry</button>
+        </div>
+    </form>
+    <script src="js/todoList.js"></script>
+</body>
+</html>
