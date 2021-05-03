@@ -6,6 +6,11 @@ function Movie(slots) {
 
 Movie.instances = {};
 
+Movie.convertRow2Obj = function (movieRow) {
+  var movie = new Movie(movieRow);
+  return movie;
+};
+
 Movie.add = function (slots) {
   let movie = new Movie(slots);
   Movie.instances[slots.movieId] = movie;
@@ -13,10 +18,11 @@ Movie.add = function (slots) {
 };
 
 Movie.retrieveAll = function () {
+  console.log("movie model");
   var moviesString = "";
   try {
     if (localStorage["movies"]) {
-      moviesString = localStorage[" movies"];
+      moviesString = localStorage["movies"];
     }
   } catch (e) {
     alert("Error when reading from Local Storage\n" + e);
