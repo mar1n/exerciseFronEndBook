@@ -49,8 +49,12 @@ request.onsuccess = function(event) {
 
     var objectStore = db.transaction("customers").objectStore("customers");
     var index = objectStore.index("name");
-    index.get("Szymon").onsuccess = function(event) {
-        console.log("Szymon's SSN is " + event.target.result.ssn);
+    index.openKeyCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if(cursor) {
+            console.log("Name: " + cursor.key + ", SSN: " + cursor.primaryKey);
+            cursor.continue();
+        }
     }
     // objectStore.openCursor().onsuccess = function(event) {
     //     var cursor = event.target.result;
