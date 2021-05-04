@@ -49,13 +49,27 @@ request.onsuccess = function(event) {
 
     var objectStore = db.transaction("customers").objectStore("customers");
     var index = objectStore.index("name");
-    index.openKeyCursor().onsuccess = function(event) {
+    
+    var singleKeyRange = IDBKeyRange.only("Szymon");
+    var lowerBoundKeyRange = IDBKeyRange.lowerBound("Robert");
+    var lowerBoundOpenKeyRange = IDBKeyRange.lowerBound("Robert", true);
+    var upperBoundOpenKeyRange = IDBKeyRange.upperBound("Szymon", true);
+    var boundKeyRange = IDBKeyRange.bound("Robert", "Szymon", false, true);
+
+    index.openCursor(upperBoundOpenKeyRange).onsuccess = function(event) {
         var cursor = event.target.result;
         if(cursor) {
-            console.log("Name: " + cursor.key + ", SSN: " + cursor.primaryKey);
+            console.log('Name: ', cursor.value.name);
             cursor.continue();
         }
     }
+    // index.openKeyCursor().onsuccess = function(event) {
+    //     var cursor = event.target.result;
+    //     if(cursor) {
+    //         console.log("Name: " + cursor.key + ", SSN: " + cursor.primaryKey);
+    //         cursor.continue();
+    //     }
+    // }
     // objectStore.openCursor().onsuccess = function(event) {
     //     var cursor = event.target.result;
     //     if(cursor) {
