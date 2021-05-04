@@ -49,17 +49,21 @@ request.onsuccess = function(event) {
     console.log('result', event.target.result);
     // remove data from store
     var db = event.target.result;
-    var transaction = db.transaction(["customers"], "readwrite")
-        .objectStore("customers")
-        .delete("555-55-5555");
+    // var transaction = db.transaction(["customers"], "readwrite")
+    //     .objectStore("customers")
+    //     .delete("555-55-5555");
     // var transaction = db.transaction(["customers"], "readwrite");
     // Do something when all the data is added to the database.
-    transaction.onsuccess = function (event) {
+    var transaction = db.transaction(["customers"]);
+    var objectStore = transaction.objectStore("customers");
+    var request = objectStore.get("666-66-6666");
+
+    request.onsuccess = function (event) {
       console.log("All done!");
-      console.log('delete event', event.target.result);
+      console.log('Name for SSN 666-66-6666', request.result.name);
     };
     
-    transaction.onerror = function (event) {
+    request.onerror = function (event) {
         console.log('error', event.target.error);
       // Don't forget to handle errors!
     };
