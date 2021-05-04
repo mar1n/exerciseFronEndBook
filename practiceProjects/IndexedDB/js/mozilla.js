@@ -54,13 +54,23 @@ request.onsuccess = function(event) {
     //     .delete("555-55-5555");
     // var transaction = db.transaction(["customers"], "readwrite");
     // Do something when all the data is added to the database.
-    var transaction = db.transaction(["customers"]);
-    var objectStore = transaction.objectStore("customers");
+    // var transaction = db.transaction(["customers"]);
+    // var objectStore = transaction.objectStore("customers");
+    // var request = objectStore.get("666-66-6666");
+    var objectStore = db.transaction(["customers"], "readwrite").objectStore("customers");
     var request = objectStore.get("666-66-6666");
-
     request.onsuccess = function (event) {
-      console.log("All done!");
-      console.log('Name for SSN 666-66-6666', request.result.name);
+      var data = event.target.result;
+
+      data.age = 66;
+
+      var requestUpdate = objectStore.put(data);
+      requestUpdate.onerror = function(event) {
+          console.log('error', event.error);
+      }
+      requestUpdate.onsuccess = function(event) {
+          console.log('updated', event);
+      }
     };
     
     request.onerror = function (event) {
