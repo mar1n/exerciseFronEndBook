@@ -56,7 +56,7 @@ request.onsuccess = function(event) {
     var upperBoundOpenKeyRange = IDBKeyRange.upperBound("Szymon", true);
     var boundKeyRange = IDBKeyRange.bound("Robert", "Szymon", false, true);
 
-    index.openCursor(upperBoundOpenKeyRange).onsuccess = function(event) {
+    index.openCursor(lowerBoundKeyRange, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
         if(cursor) {
             console.log('Name: ', cursor.value.name);
