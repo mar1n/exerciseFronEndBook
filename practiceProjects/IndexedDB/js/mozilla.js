@@ -45,10 +45,25 @@ request.onupgradeneeded = function (event) {
 };
 
 request.onsuccess = function(event) {
-    console.log('sucess');
-    console.log('result', event.target.result);
-    // remove data from store
     var db = event.target.result;
+
+    var objectStore = db.transaction("customers").objectStore("customers");
+    objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if(cursor) {
+            console.log("Name for SSN " + cursor.key + " is " + cursor.value.name);
+            cursor.continue();
+        } else {
+            console.log("No more entries!");
+        }
+    }
+}
+
+// request.onsuccess = function(event) {
+//     console.log('sucess');
+//     console.log('result', event.target.result);
+    // remove data from store
+    //var db = event.target.result;
     // var transaction = db.transaction(["customers"], "readwrite")
     //     .objectStore("customers")
     //     .delete("555-55-5555");
@@ -57,26 +72,26 @@ request.onsuccess = function(event) {
     // var transaction = db.transaction(["customers"]);
     // var objectStore = transaction.objectStore("customers");
     // var request = objectStore.get("666-66-6666");
-    var objectStore = db.transaction(["customers"], "readwrite").objectStore("customers");
-    var request = objectStore.get("666-66-6666");
-    request.onsuccess = function (event) {
-      var data = event.target.result;
+    // var objectStore = db.transaction(["customers"], "readwrite").objectStore("customers");
+    // var request = objectStore.get("666-66-6666");
+    // request.onsuccess = function (event) {
+    //   var data = event.target.result;
 
-      data.age = 66;
+    //   data.age = 66;
 
-      var requestUpdate = objectStore.put(data);
-      requestUpdate.onerror = function(event) {
-          console.log('error', event.error);
-      }
-      requestUpdate.onsuccess = function(event) {
-          console.log('updated', event);
-      }
-    };
+    //   var requestUpdate = objectStore.put(data);
+    //   requestUpdate.onerror = function(event) {
+    //       console.log('error', event.error);
+    //   }
+    //   requestUpdate.onsuccess = function(event) {
+    //       console.log('updated', event);
+    //   }
+    // };
     
-    request.onerror = function (event) {
-        console.log('error', event.target.error);
-      // Don't forget to handle errors!
-    };
+    // request.onerror = function (event) {
+    //     console.log('error', event.target.error);
+    //   // Don't forget to handle errors!
+    // };
     
     // var objectStore = transaction.objectStore("customers");
     // customer.forEach(function (customer) {
@@ -87,4 +102,4 @@ request.onsuccess = function(event) {
     //     // event.target.result === customer.ssn;
     //   };
     // });
-}
+//}
