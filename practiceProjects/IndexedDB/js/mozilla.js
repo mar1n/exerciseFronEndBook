@@ -48,15 +48,19 @@ request.onsuccess = function(event) {
     var db = event.target.result;
 
     var objectStore = db.transaction("customers").objectStore("customers");
-    objectStore.openCursor().onsuccess = function(event) {
-        var cursor = event.target.result;
-        if(cursor) {
-            console.log("Name for SSN " + cursor.key + " is " + cursor.value.name);
-            cursor.continue();
-        } else {
-            console.log("No more entries!");
-        }
+    var index = objectStore.index("name");
+    index.get("Szymon").onsuccess = function(event) {
+        console.log("Szymon's SSN is " + event.target.result.ssn);
     }
+    // objectStore.openCursor().onsuccess = function(event) {
+    //     var cursor = event.target.result;
+    //     if(cursor) {
+    //         console.log("Name for SSN " + cursor.key + " is " + cursor.value.name);
+    //         cursor.continue();
+    //     } else {
+    //         console.log("No more entries!");
+    //     }
+    // }
 }
 
 // request.onsuccess = function(event) {
