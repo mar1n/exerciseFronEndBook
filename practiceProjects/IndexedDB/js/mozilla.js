@@ -47,11 +47,16 @@ request.onupgradeneeded = function (event) {
 request.onsuccess = function(event) {
     console.log('sucess');
     console.log('result', event.target.result);
+    // remove data from store
     var db = event.target.result;
-    var transaction = db.transaction(["customers"], "readwrite");
+    var transaction = db.transaction(["customers"], "readwrite")
+        .objectStore("customers")
+        .delete("555-55-5555");
+    // var transaction = db.transaction(["customers"], "readwrite");
     // Do something when all the data is added to the database.
-    transaction.oncomplete = function (event) {
+    transaction.onsuccess = function (event) {
       console.log("All done!");
+      console.log('delete event', event.target.result);
     };
     
     transaction.onerror = function (event) {
@@ -59,13 +64,13 @@ request.onsuccess = function(event) {
       // Don't forget to handle errors!
     };
     
-    var objectStore = transaction.objectStore("customers");
-    customer.forEach(function (customer) {
-      var request = objectStore.add(customer);
-      request.onsuccess = function (event) {
-          console.log('success')
-          console.log('compare result vs customer ssn', event.target.result === customer.ssn);
-        // event.target.result === customer.ssn;
-      };
-    });
+    // var objectStore = transaction.objectStore("customers");
+    // customer.forEach(function (customer) {
+    //   var request = objectStore.add(customer);
+    //   request.onsuccess = function (event) {
+    //       console.log('success')
+    //       console.log('compare result vs customer ssn', event.target.result === customer.ssn);
+    //     // event.target.result === customer.ssn;
+    //   };
+    // });
 }
