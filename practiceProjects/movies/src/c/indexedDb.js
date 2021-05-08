@@ -5,9 +5,10 @@ const movieData = [
 ];
 
 var idb, dbobject, search, list, show, triggers, thead, tbody, deletebtn;
-var addnew, add, addcheckbox, buildtask, displaytasks, hashchangehandler, hide, init, searchhandler, sort, viewentry, updatestatus, deletehandler, errorhandler, timestamp;
+var createTestData, addTestDate, addcheckbox, buildtask, displaytasks, hashchangehandler, hide, init, searchhandler, sort, viewentry, updatestatus, deletehandler, clearDB, clear, errorhandler, timestamp;
 
-addnew = document.getElementById('createTestData');
+createTestData = document.getElementById('createTestData');
+clearDB = document.getElementById('clearDB');
 
 errorhandler = function(event) {
     console.log('error', event.target.error);
@@ -42,7 +43,7 @@ init = function () {
     };
 };
 
-add = function(event) {
+addTestDate = function(event) {
     'use strict';
     ///console.log('added');
     var transaction, objectstore, request;
@@ -73,5 +74,19 @@ add = function(event) {
     //return 'sssss'
 };
 
-addnew.addEventListener('click', add);
+clear = function(event) {
+    console.log('clear');
+    var transaction, objectstore;
+    transaction = dbobject.transaction('movies', 'readwrite');
+
+    objectStore = transaction.objectStore('movies');
+
+    var objectStoreRequest = objectStore.clear();
+    objectStoreRequest.onsuccess = function(event) {
+        console.log('The Data Base is empty!');
+    }
+}
+
+createTestData.addEventListener('click', addTestDate);
+clearDB.addEventListener('click', clear);
 window.addEventListener('load', init);
