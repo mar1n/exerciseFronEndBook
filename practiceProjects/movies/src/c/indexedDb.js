@@ -114,14 +114,23 @@ getDate = function (event) {
   var transaction, objectstore;
   transaction = dbobject.transaction("movies");
   objectstore = transaction.objectStore("movies");
-  var objectStoreRequest = objectstore.getAll();
+  var objectStoreRequest = objectstore.openCursor();
 
   objectStoreRequest.onerror = function (event) {
     console.log("error", event);
   };
 
   objectStoreRequest.onsuccess = function (event) {
-    console.log("retrieve", objectStoreRequest.result);
+      let cursor = event.target.result;
+      if(cursor) {
+          let key = cursor.primaryKey;
+          let value = cursor.value;
+          console.log('retrieve', key, value);
+          cursor.continue();
+      } else {
+          console.log('no more result')
+      }
+    //console.log("retrieve", objectStoreRequest.result);
   };
 };
 
