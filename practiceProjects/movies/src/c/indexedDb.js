@@ -13,6 +13,8 @@ var retrieve,
   add,
   updateMovie,
   update,
+  deleteMovie,
+  deleteM,
   buildtask,
   displaytasks,
   hashchangehandler,
@@ -33,7 +35,7 @@ clearDB = document.getElementById("clearDB");
 retrieve = document.getElementById("retrieve");
 addMovie = document.getElementById("testAdd");
 updateMovie = document.getElementById("testUpdate");
-
+deleteMovie = document.getElementById("testDelete");
 errorhandler = function (event) {
   console.log("error", event.target.error);
 };
@@ -169,10 +171,26 @@ update = function(event) {
         console.log('error', event);
     }
 }
+const deleteTestKey = 19;
+deleteM = function(event) {
+    console.log('delete');
+    var transaction, objectstore;
+    transaction = dbobject.transaction("movies", "readwrite");
+    objectstore = transaction.objectStore("movies");
+
+    var objectStoreRequest = objectstore.delete(deleteTestKey);
+    objectStoreRequest.onsuccess = function(event) {
+        console.log('success delete', event);
+    }
+    objectStoreRequest.onerror = function(event) {
+        console.log('error', event);
+    }
+}
 
 createTestData.addEventListener("click", addTestDate);
 clearDB.addEventListener("click", clear);
 retrieve.addEventListener("click", getDate);
 addMovie.addEventListener("click", add);
 updateMovie.addEventListener("click", update);
+deleteMovie.addEventListener("click", deleteM);
 window.addEventListener("load", init);
