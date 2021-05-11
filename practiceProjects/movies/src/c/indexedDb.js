@@ -9,7 +9,10 @@ var retrieve,
   getDate,
   createTestData,
   addTestDate,
-  addcheckbox,
+  addMovie,
+  add,
+  updateMovie,
+  update,
   buildtask,
   displaytasks,
   hashchangehandler,
@@ -28,6 +31,8 @@ var retrieve,
 createTestData = document.getElementById("createTestData");
 clearDB = document.getElementById("clearDB");
 retrieve = document.getElementById("retrieve");
+addMovie = document.getElementById("testAdd");
+updateMovie = document.getElementById("testUpdate");
 
 errorhandler = function (event) {
   console.log("error", event.target.error);
@@ -133,8 +138,41 @@ getDate = function (event) {
     //console.log("retrieve", objectStoreRequest.result);
   };
 };
+const addTest = {title: "Terminator 2", releaseDate: "1997"};
+add = function(event) {
+    console.log('addd');
+    var transaction, objectstore;
+    transaction = dbobject.transaction("movies", "readwrite");
+    objectstore = transaction.objectStore("movies");
+
+    var objectStoreRequest = objectstore.add(addTest);
+    objectStoreRequest.onsuccess = function(event) {
+        console.log('success add', event.target.result);
+    }
+    objectStoreRequest.onerror = function(event) {
+        console.log('error', event);
+    }
+}
+const updateTest = {title: "Terminator 3", releaseDate: "1997"};
+const updateTestKey = 19;
+update = function(event) {
+    console.log('update');
+    var transaction, objectstore;
+    transaction = dbobject.transaction("movies", "readwrite");
+    objectstore = transaction.objectStore("movies");
+
+    var objectStoreRequest = objectstore.put(updateTest, updateTestKey);
+    objectStoreRequest.onsuccess = function(event) {
+        console.log('success update', event.target.result);
+    }
+    objectStoreRequest.onerror = function(event) {
+        console.log('error', event);
+    }
+}
 
 createTestData.addEventListener("click", addTestDate);
 clearDB.addEventListener("click", clear);
 retrieve.addEventListener("click", getDate);
+addMovie.addEventListener("click", add);
+updateMovie.addEventListener("click", update);
 window.addEventListener("load", init);
