@@ -128,64 +128,76 @@ getDate = function (event) {
   };
 
   objectStoreRequest.onsuccess = function (event) {
-      let cursor = event.target.result;
-      if(cursor) {
-          let key = cursor.primaryKey;
-          let value = cursor.value;
-          console.log('retrieve', key, value);
-          cursor.continue();
-      } else {
-          console.log('no more result')
-      }
+    let cursor = event.target.result;
+    if (cursor) {
+      let key = cursor.primaryKey;
+      let value = cursor.value;
+      console.log("retrieve", key, value);
+      cursor.continue();
+    } else {
+      console.log("no more result");
+    }
     //console.log("retrieve", objectStoreRequest.result);
   };
 };
-const addTest = {title: "Terminator 2", releaseDate: "1997"};
-add = function(event) {
-    console.log('addd');
-    var transaction, objectstore;
-    transaction = dbobject.transaction("movies", "readwrite");
-    objectstore = transaction.objectStore("movies");
+const addTest = { title: "Terminator 2", releaseDate: "1997" };
+add = function (event) {
+  console.log("addd");
+  var transaction, objectstore;
+  transaction = dbobject.transaction("movies", "readwrite");
+  objectstore = transaction.objectStore("movies");
 
-    var objectStoreRequest = objectstore.add(addTest);
-    objectStoreRequest.onsuccess = function(event) {
-        console.log('success add', event.target.result);
-    }
-    objectStoreRequest.onerror = function(event) {
-        console.log('error', event);
-    }
-}
-const updateTest = {title: "Terminator 3", releaseDate: "1997"};
+  var objectStoreRequest = objectstore.add(addTest);
+  objectStoreRequest.onsuccess = function (event) {
+    console.log("success add", event.target.result);
+  };
+  objectStoreRequest.onerror = function (event) {
+    console.log("error", event);
+  };
+};
+const updateTest = { title: "Terminator 3", releaseDate: "1997" };
 const updateTestKey = 19;
-update = function(event) {
-    console.log('update');
-    var transaction, objectstore;
-    transaction = dbobject.transaction("movies", "readwrite");
-    objectstore = transaction.objectStore("movies");
+update = function (event) {
+  console.log("update");
+  var transaction, objectstore;
+  transaction = dbobject.transaction("movies", "readwrite");
+  objectstore = transaction.objectStore("movies");
 
-    var objectStoreRequest = objectstore.put(updateTest, updateTestKey);
-    objectStoreRequest.onsuccess = function(event) {
-        console.log('success update', event.target.result);
+  var objectStoreRequest = objectstore.put(updateTest, updateTestKey);
+  objectStoreRequest.onsuccess = function (event) {
+    console.log("success update", event.target.result);
+  };
+  objectStoreRequest.onerror = function (event) {
+    console.log("error", event);
+  };
+};
+const deleteTestKey = 18;
+deleteM = function (event) {
+  console.log("delete");
+  var transaction, objectstore;
+  transaction = dbobject.transaction("movies", "readwrite");
+  objectstore = transaction.objectStore("movies");
+  var request = objectstore.getKey(deleteTestKey);
+  request.onsuccess = function (event) {
+    console.log("asd", event.target.result);
+    if (event.target.result) {
+      var objecrStoreRequest = objectstore.delete(deleteTestKey);
+      objecrStoreRequest.onsuccess = function (event) {
+        console.log("Data has been deleted");
+      };
+    } else {
+      console.log("Data doesn t exist");
     }
-    objectStoreRequest.onerror = function(event) {
-        console.log('error', event);
-    }
-}
-const deleteTestKey = 19;
-deleteM = function(event) {
-    console.log('delete');
-    var transaction, objectstore;
-    transaction = dbobject.transaction("movies", "readwrite");
-    objectstore = transaction.objectStore("movies");
+    // var objectStoreRequest = objectstore.delete(deleteTestKey);
+    // objectStoreRequest.onsuccess = function(event) {
+    //     console.log('success delete', event);
+    // }
+  };
 
-    var objectStoreRequest = objectstore.delete(deleteTestKey);
-    objectStoreRequest.onsuccess = function(event) {
-        console.log('success delete', event);
-    }
-    objectStoreRequest.onerror = function(event) {
-        console.log('error', event);
-    }
-}
+  request.onerror = function (event) {
+    console.log("error", event);
+  };
+};
 
 createTestData.addEventListener("click", addTestDate);
 clearDB.addEventListener("click", clear);
