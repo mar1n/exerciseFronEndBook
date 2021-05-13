@@ -1,7 +1,6 @@
 function Movie(slots) {
-  this.movieId = slots.movieId;
   this.title = slots.title;
-  this.year = slots.year;
+  this.year = slots.releaseDate;
 }
 
 Movie.instances = {};
@@ -16,7 +15,7 @@ Movie.add = function (slots) {
   Movie.instances[slots.movieId] = movie;
   console.log("Movie " + movie.movieId + " created!");
 };
-
+//const moviesInstanceTest;
 Movie.retrieveAll = function () {
   console.log("movie model");
   var moviesString = "";
@@ -28,13 +27,16 @@ Movie.retrieveAll = function () {
     alert("Error when reading from Local Storage\n" + e);
   }
   if (moviesString) {
+    console.log("moviesString", moviesString);
     let movies = JSON.parse(moviesString);
+    console.log("movies JSON.parse", movies);
     let keys = Object.keys(movies);
     console.log(keys.length + " movies loaded.");
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
       Movie.instances[key] = Movie.convertRow2Obj(movies[key]);
     }
+    console.log("instances", Movie.instances);
   }
 };
 
@@ -91,4 +93,109 @@ Movie.clearData = function () {
   if (confirm("Do you really want to delete all movie data?")) {
     localStorage["movies"] = "{}";
   }
+};
+
+Movie.init = function () {
+  console.log("movie init");
+  Movie.newMethod = "asdadad";
+  var idb;
+  var errorhandler = function (event) {
+    console.log("error", event.target.error);
+  };
+  idb = indexedDB.open("Movies", 2);
+  Movie.dbobject = dbobject;
+  idb.onupgradeneeded = function (evt) {
+    var tasks, transaction;
+
+    dbobject = evt.target.result;
+    Movie.dbobject = dbobject;
+    console.log("asdadsad", Movie);
+    if (evt.oldVersion < 1) {
+      tasks = dbobject.createObjectStore(
+        "movies",
+        { autoIncrement: true },
+        { keyPath: "movieId" }
+      );
+      transaction = evt.target.transaction.objectStore("movies");
+      transaction.createIndex("title", "title");
+      transaction.createIndex("releaseDate", "releaseDate");
+    }
+  };
+
+  idb.onerror = errorhandler;
+
+  idb.onsuccess = function (event) {
+    if (dbobject === undefined) {
+      dbobject = event.target.result;
+    }
+    Movie.dbobject = "hi";
+    console.log("asdadsad", Movie.dbobject);
+    console.log("dbobject init", dbobject);
+    //displaytasks(dbobject);
+  };
+};
+const movieData = [
+  { title: "Pulp Fiction", releaseDate: "1988" },
+  { title: "Terminator 2", releaseDate: "1997" },
+];
+
+Movie.createTestDataIndexedDb = function () {
+  return new Promise((resolve, reject) => {
+    var transaction, objectstore, request;
+
+    transaction = Movie.dbOpen.transaction("movies", "readwrite");
+    objectstore = transaction.objectStore("movies");
+  
+    movieData.forEach(function (movie) {
+      request = objectstore.add(movie);
+  
+      request.onsuccess = function (event) {
+        console.log("sucess", event);
+      };
+    });
+  });
+};
+Movie.clear = function (event) {
+  console.log("clear");
+  var transaction, objectstore;
+  transaction = Movie.dbOpen.transaction("movies", "readwrite");
+
+  objectStore = transaction.objectStore("movies");
+
+  var objectStoreRequest = objectStore.clear();
+  objectStoreRequest.onsuccess = function (event) {
+    console.log("The Data Base is empty!");
+  };
+};
+
+Movie.retrieveIndexedDB = function (dbReq, dom) {
+  return new Promise((resolve, reject) => {
+    var transaction, objectstore;
+    transaction = dbReq.transaction("movies");
+    objectstore = transaction.objectStore("movies");
+    var objectStoreRequest = objectstore.openCursor();
+
+    const result = [];
+    objectStoreRequest.onsuccess = function (event) {
+      const cursor = event.target.result;
+      if (cursor) {
+        let key = cursor.primaryKey;
+        let value = cursor.value;
+
+        Movie.instances[key] = Movie.convertRow2Obj(value);
+        cursor.continue();
+      } else {
+        return resolve(Movie.instances);
+      }
+    };
+
+    objectStoreRequest.onerror = function (event) {
+      console.log("error", event);
+      reject(event);
+    };
+  })
+    .then((value) => {
+      dom(value);
+    })
+    .catch((error) => console.log("", error));
 };

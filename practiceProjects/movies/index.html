@@ -3,30 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <title>Practice Project Movies</title>
-    <script src="src/c/initialize.js"></script>
-    <script src="src/m/Movie.js"></script>
   </head>
   <body>
     <h1>Movies</h1>
     <h2>An Example of a Movies</h2>
     <p>This app supports the following operations:</p>
     <menu>
-     <li><a href="retrieveAndListAllMovies.html">
-          List all movies</a></li>
-     <li><a href="createMovie.html">Add a new movie</a></li>
-     <li><a href="updateMovie.html">Update a movie</a></li>
-     <li><a href="deleteMovie.html">Delete a movie</a></li>
-     <li><button id="clearDB" type="button">
-       Clear database
-     </button></li>
-     <li><button id="createTestData" type="button">
-       Create test data
-     </button></li>
-     <li><button id="retrieve" type="button">Retrieve</button></li>
-     <li><button id="testAdd">Test Add</button></li>
-     <li><button id="testUpdate">Test Update</button></li>
-     <li><button id="testDelete">Test Delete</button></li>
-    </menu>
-    <script src="src/c/indexedDb.js"></script>
+      <li><a href="retrieveAndListAllMovies.html">
+        List all movies</a></li>
+        <li><a href="createMovie.html">Add a new movie</a></li>
+        <li><a href="updateMovie.html">Update a movie</a></li>
+        <li><a href="deleteMovie.html">Delete a movie</a></li>
+        <li><button type="button" onclick="Movie.clear()">
+          Clear database
+        </button></li>
+        <li><button type="button" onclick="Movie.createTestDataIndexedDb()">
+          Create test data
+        </button></li>
+        <li><button id="retrieve" type="button">Retrieve</button></li>
+        <li><button id="testAdd">Test Add</button></li>
+        <li><button id="testUpdate">Test Update</button></li>
+        <li><button id="testDelete">Test Delete</button></li>
+      </menu>
+      <script src="src/c/initialize.js"></script>
+      <script src="src/v/index.js"></script>
+      <script src="src/m/Movie.js"></script>
+      <script src="src/c/indexedDb.js"></script>
   </body>
 </html>

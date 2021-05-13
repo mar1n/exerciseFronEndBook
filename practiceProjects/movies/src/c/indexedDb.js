@@ -1,9 +1,4 @@
-console.log("indexedDb");
-const movieData = [
-  { title: "Pulp Fiction", releaseDate: "1988" },
-  { title: "Terminator 2", releaseDate: "1997" },
-];
-
+console.log("indexeddb");
 var idb, dbobject, search, list, show, triggers, thead, tbody, deletebtn;
 var retrieve,
   getDate,
@@ -30,12 +25,12 @@ var retrieve,
   errorhandler,
   timestamp;
 
-createTestData = document.getElementById("createTestData");
-clearDB = document.getElementById("clearDB");
-retrieve = document.getElementById("retrieve");
-addMovie = document.getElementById("testAdd");
-updateMovie = document.getElementById("testUpdate");
-deleteMovie = document.getElementById("testDelete");
+//createTestData = document.getElementById("createTestData");
+// clearDB = document.getElementById("clearDB");
+// retrieve = document.getElementById("retrieve");
+// addMovie = document.getElementById("testAdd");
+// updateMovie = document.getElementById("testUpdate");
+// deleteMovie = document.getElementById("testDelete");
 errorhandler = function (event) {
   console.log("error", event.target.error);
 };
@@ -199,10 +194,67 @@ deleteM = function (event) {
   };
 };
 
-createTestData.addEventListener("click", addTestDate);
-clearDB.addEventListener("click", clear);
-retrieve.addEventListener("click", getDate);
-addMovie.addEventListener("click", add);
-updateMovie.addEventListener("click", update);
-deleteMovie.addEventListener("click", deleteM);
-window.addEventListener("load", init);
+// createTestData.addEventListener("click", addTestDate);
+// clearDB.addEventListener("click", clear);
+//retrieve.addEventListener("click", getDate);
+// addMovie.addEventListener("click", add);
+// updateMovie.addEventListener("click", update);
+// deleteMovie.addEventListener("click", deleteM);
+var someFn = function () {
+  return new Promise((resolve, reject) => {
+    //init();
+    setTimeout(() => {
+      resolve(init());
+    }, 300);
+  })
+    .then((value) => console.log("ssssss"))
+    .catch((err) => console.log(err));
+};
+
+function Database_Open(asd) {
+  return new Promise(function (resolve, reject) {
+    var dbReq = indexedDB.open("Movies", 2);
+    dbReq.onupgradeneeded = function (event) {
+      meDatabase = event.target.result;
+
+      let bbDetailStore = meDatabase.createObjectStore(
+        "movies",
+        { autoIncrement: true },
+      );
+
+      bbDetailStore.createIndex("title", "title");
+      bbDetailStore.createIndex("releaseDate", "releaseDate");
+      resolve(dbReq);
+    };
+    dbReq.onsuccess = function (event) {
+      console.log("open");
+      meDatabase = event.target.result;
+      let x = 1;
+      resolve(meDatabase);
+    };
+    dbReq.onerror = function (event) {
+      reject("error opening database " + event.target.errorCode);
+    };
+  })
+    .then((value) => {
+      if(asd) {
+        asd(value)
+      } else {
+        return value;
+      }
+    }
+    ).catch((error) => console.log("Database open has problems: ", error));
+}
+
+if(window.location.href === 'file:///D:/react/exerciseFrontEndBook/practiceProjects/movies/retrieveAndListAllMovies.html') {
+  window.addEventListener(
+    "load",
+    Database_Open(pl.v.retrieveAndListAllMovies.setupUserInterface)
+  );
+} else {
+  window.addEventListener(
+    "load",
+    Database_Open(pl.v.index.setupUserInterface)
+  );
+}
+window.addEventListener("load", console.log("sadadada"));
