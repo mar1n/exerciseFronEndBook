@@ -3,12 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <title>Practice Project Movies</title>
-    <script src="src/c/initialize.js"></script>
-    <script src="src/m/Movie.js"></script>
-    <script src="src/v/createMovie.js"></script>
-    <script>
-      window.addEventListener("load", pl.v.createMovie.setupUserInterface);
-    </script>
   </head>
   <body>
     <header>
@@ -17,13 +11,10 @@
     <main>
       <form id="Movie">
         <div>
-          <label>MovieId: <input name="movieId" /></label>
-        </div>
-        <div>
           <label>Title: <input name="title" /></label>
         </div>
         <div>
-          <label>Year: <input name="year" /></label>
+          <label>Year: <input name="releaseDate" /></label>
         </div>
         <div><button type="button" name="commit">Save</button></div>
       </form>
@@ -31,5 +22,13 @@
     <footer>
       <a href="index.html">Back to main menu</a>
     </footer>
+    <script src="src/c/initialize.js"></script>
+    <script src="src/v/index.js"></script>
+    <script src="src/m/Movie.js"></script>
+    <script src="src/v/createMovie.js"></script>
+    <script src="src/c/indexedDb.js"></script>
+    <script>
+      window.addEventListener("load", pl.v.createMovie.setupUserInterface);
+      </script>
   </body>
 </html>

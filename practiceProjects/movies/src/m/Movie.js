@@ -1,6 +1,6 @@
 function Movie(slots) {
   this.title = slots.title;
-  this.year = slots.releaseDate;
+  this.releaseDate = slots.releaseDate;
 }
 
 Movie.instances = {};
@@ -12,8 +12,18 @@ Movie.convertRow2Obj = function (movieRow) {
 
 Movie.add = function (slots) {
   let movie = new Movie(slots);
-  Movie.instances[slots.movieId] = movie;
-  console.log("Movie " + movie.movieId + " created!");
+  //Movie.instances[slots.movieId] = movie;
+  var transaction, objectstore;
+  transaction = Movie.dbOpen.transaction("movies", "readwrite");
+  objectstore = transaction.objectStore("movies");
+
+  var objectStoreRequest = objectstore.add(movie);
+  objectStoreRequest.onsuccess = function (event) {
+    console.log("success add", event.target.result);
+  };
+  objectStoreRequest.onerror = function (event) {
+    console.log("error", event);
+  };
 };
 //const moviesInstanceTest;
 Movie.retrieveAll = function () {
