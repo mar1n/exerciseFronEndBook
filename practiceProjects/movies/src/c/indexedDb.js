@@ -262,6 +262,11 @@ if (
     "load",
     Database_Open(pl.v.updateMovie.setupUserInterface)
   );
+} if(window.location.href === 'file:///D:/react/exerciseFrontEndBook/practiceProjects/movies/deleteMovie.html') {
+  window.addEventListener(
+    "load",
+    Database_Open(pl.v.deleteMovie.setupUserInterface)
+  )
 } else {
   window.addEventListener("load", Database_Open(pl.v.index.setupUserInterface));
 }

@@ -228,3 +228,26 @@ Movie.updateIndexedDb = function (updateValues, updateKey) {
 
   })
 };
+
+Movie.deleteIndexedDb = function(movieKey) {
+  console.log('indexeddb delete', movieKey);
+  var transaction, objectstore;
+  transaction = Movie.dbOpen.transaction("movies", "readwrite");
+  objectstore = transaction.objectStore("movies");
+  var request = objectstore.getKey(movieKey);
+  request.onsuccess = function (event) {
+    console.log("asd", event.target.result);
+    if (event.target.result) {
+      var objecrStoreRequest = objectstore.delete(movieKey);
+      objecrStoreRequest.onsuccess = function (event) {
+        console.log("Data has been deleted");
+      };
+    } else {
+      console.log("Data doesn t exist");
+    }
+  };
+
+  request.onerror = function (event) {
+    console.log("error", event);
+  };
+}
