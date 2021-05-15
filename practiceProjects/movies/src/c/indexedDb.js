@@ -211,19 +211,18 @@ var someFn = function () {
     .catch((err) => console.log(err));
 };
 
-function Database_Open(asd) {
+function Database_Open(connect) {
   return new Promise(function (resolve, reject) {
     var dbReq = indexedDB.open("Movies", 2);
     dbReq.onupgradeneeded = function (event) {
       meDatabase = event.target.result;
 
-      let bbDetailStore = meDatabase.createObjectStore(
-        "movies",
-        { autoIncrement: true },
-      );
+      let MoviesStore = meDatabase.createObjectStore("movies", {
+        autoIncrement: true,
+      });
 
-      bbDetailStore.createIndex("title", "title");
-      bbDetailStore.createIndex("releaseDate", "releaseDate");
+      MoviesStore.createIndex("title", "title");
+      MoviesStore.createIndex("releaseDate", "releaseDate");
       resolve(dbReq);
     };
     dbReq.onsuccess = function (event) {
@@ -237,24 +236,33 @@ function Database_Open(asd) {
     };
   })
     .then((value) => {
-      if(asd) {
-        asd(value)
+      if (connect) {
+        connect(value);
       } else {
         return value;
       }
-    }
-    ).catch((error) => console.log("Database open has problems: ", error));
+    })
+    .catch((error) => console.log("Database open has problems: ", error));
 }
 
-if(window.location.href === 'file:///D:/react/exerciseFrontEndBook/practiceProjects/movies/retrieveAndListAllMovies.html') {
+if (
+  window.location.href ===
+  "file:///D:/react/exerciseFrontEndBook/practiceProjects/movies/retrieveAndListAllMovies.html"
+) {
   window.addEventListener(
     "load",
     Database_Open(pl.v.retrieveAndListAllMovies.setupUserInterface)
   );
-} else {
+} else
+if (
+  window.location.href ===
+  "file:///D:/react/exerciseFrontEndBook/practiceProjects/movies/updateMovie.html"
+) {
   window.addEventListener(
     "load",
-    Database_Open(pl.v.index.setupUserInterface)
+    Database_Open(pl.v.updateMovie.setupUserInterface)
   );
+} else {
+  window.addEventListener("load", Database_Open(pl.v.index.setupUserInterface));
 }
 window.addEventListener("load", console.log("sadadada"));

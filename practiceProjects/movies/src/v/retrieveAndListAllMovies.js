@@ -15,7 +15,7 @@ pl.v.retrieveAndListAllMovies = {
           row = tableBodyEl.insertRow();
           row.insertCell(-1).textContent = key;
           row.insertCell(-1).textContent = Movie.instances[key].title;
-          row.insertCell(-1).textContent = Movie.instances[key].year;
+          row.insertCell(-1).textContent = Movie.instances[key].releaseDate;
         }
       });
       //Movie.retrieveAll();

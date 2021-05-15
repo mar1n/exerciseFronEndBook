@@ -209,3 +209,22 @@ Movie.retrieveIndexedDB = function (dbReq, dom) {
     })
     .catch((error) => console.log("", error));
 };
+
+Movie.updateIndexedDb = function (updateValues, updateKey) {
+  return new Promise((resolve, reject) => {
+
+    var transaction, objectstore;
+    transaction = Movie.dbOpen.transaction("movies", "readwrite");
+    objectstore = transaction.objectStore("movies");
+  
+    var objectStoreRequest = objectstore.put(updateValues, updateKey);
+    objectStoreRequest.onsuccess = function (event) {
+      Movie.instances[updateKey] = updateValues;
+      console.log("success update", event.target.result);
+    };
+    objectStoreRequest.onerror = function (event) {
+      console.log("error", event);
+    };
+
+  })
+};
