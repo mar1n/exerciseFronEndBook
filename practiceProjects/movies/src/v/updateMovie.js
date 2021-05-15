@@ -10,7 +10,7 @@ pl.v.updateMovie = {
       i = 0;
     //Movie.retrieveAll();
     Movie.dbOpen = dbReq;
-    Movie.retrieveIndexedDB(dbReq, function (movieInstance) {
+    Movie.retrieveIndexedDB(function (movieInstance) {
       keys = Object.keys(movieInstance);
 
       for (i = 0; i < keys.length; i++) {

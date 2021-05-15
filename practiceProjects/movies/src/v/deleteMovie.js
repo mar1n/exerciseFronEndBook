@@ -10,7 +10,7 @@ pl.v.deleteMovie = {
         i = 0;
       // load all movie objects
       Movie.dbOpen = dbReq;
-      Movie.retrieveIndexedDB(dbReq, function(movieInstances) {
+      Movie.retrieveIndexedDB(function(movieInstances) {
         keys = Object.keys(movieInstances);
         // populate the selection list with movies
         for (i = 0; i < keys.length; i++) {

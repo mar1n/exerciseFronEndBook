@@ -1,7 +1,8 @@
 pl.v.retrieveAndListAllMovies = {
     setupUserInterface: function (dbReq) {
         // load all movie objects
-        Movie.retrieveIndexedDB(dbReq, function(movieinstance) {
+        Movie.dbOpen = dbReq;
+        Movie.retrieveIndexedDB(function(movieinstance) {
         var tableBodyEl = document.querySelector("table#movies>tbody");
         var keys = [],
           key = "",
